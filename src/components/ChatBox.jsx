@@ -4,7 +4,7 @@ import api from "../api/axios";
 import dayjs from "dayjs";
 
 // Connect once globally
-const socket = io(VITE_BACKEND_URL);
+const socket = io(import.meta.env.VITE_BACKEND_URL);
 
 const ChatBox = () => {
   const [selectedUser, setSelectedUser] = useState(null);
