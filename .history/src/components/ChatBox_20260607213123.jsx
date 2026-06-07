@@ -4,7 +4,7 @@ import api from "../api/axios";
 import dayjs from "dayjs";
 
 // Connect once globally
-const socket = io("http://localhost:3000");
+const socket = io(VITE_BACKEND_URL);
 
 const ChatBox = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -17,24 +17,18 @@ const ChatBox = () => {
 
   // Register current user with socket.io when dashboard loads
   useEffect(() => {
-    if (user?._id) {
-      socket.emit("registerUser", user._id);
-    }
-  }, [user]);
-
-  // Fetch all users (for demo, you can filter later)
-  useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await api.get("/auth/users"); // 🔹 add this route later to fetch all users
+        const res = await api.get("/auth/users");
+        // ✅ remove current user from list
         setUsers(res.data.filter((u) => u._id !== user._id));
-
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
     fetchUsers();
   }, []);
+  
 
   // When a user is selected → load chat
   useEffect(() => {
